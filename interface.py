@@ -22,6 +22,7 @@ class Interface:
         self.food_progress = 0
         self._food_needed = 0
         self._food = 0
+        self.people = 0
         self.subimages = {}
 
         self.create_interface()
@@ -198,10 +199,27 @@ class Interface:
                     food_to_eat -= card.properties['food']
                     self.food -= card.properties['food']
                     stack.remove(card)
+                    if stack in stack.craft_container:
+                        stack.craft_container.remove(stack)
                     self.cards -= 1
-                if food_to_eat <= 0:
-                    return True
-        return False
+                    if food_to_eat <= 0:
+                        return True
+        for stack in self.stacks:
+            for i in range(len(stack.sprites()) - 1, -1, -1):
+                card = stack.sprites()[i]
+                if card.properties.get('food_needed'):
+                    food_to_eat -= card.properties['food_needed']
+                    self.food_needed -= card.properties['food_needed']
+                    self.people -= 1
+                    stack.remove(card)
+                    if stack in stack.craft_container:
+                        stack.craft_container.remove(stack)
+                    self.cards -= 1
+                    if food_to_eat <= 0:
+                        return True
+        if self.people == 0:
+            return False
+        return True
 
     def check_selling(self):
 

@@ -56,4 +56,16 @@ recipes = {
         'result': (13, 5),
         'duration': 200
     },
+    Recipe([5, 1, 2, 2]): {  # villager, wood and 2 stone -> villager and house
+        'result': (14, 5),
+        'duration': 200
+    },
+    Recipe([5, 5, 14]): {  # 2 villagers and house -> 2 villagers, house and baby
+        'result': (14, 15, 5, 5),
+        'duration': 700
+    },
+    Recipe([14, 15]): {  # baby and house -> villager and house
+        'result': (14, 5),
+        'duration': 700
+    },
 }

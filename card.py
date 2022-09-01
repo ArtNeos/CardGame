@@ -6,8 +6,25 @@ import cartopedia
 from recipes import recipes, Recipe
 
 
+class CardIdGenerator:
+    def __init__(self):
+        self.villager_given = False
+        self.cards_given = 0
+        self.resources = cartopedia.resources
+
+    def gen_card(self):
+        if not self.villager_given and self.cards_given > 6:
+            if random.randint(0, 12-self.cards_given) == 0:
+                self.cards_given += 1
+                self.villager_given = True
+                return 5
+        self.cards_given += 1
+        return random.choice(self.resources)
+
+
 class Card(pygame.sprite.Sprite):
     """Класс карт добавляемых на игровое поле"""
+    card_gen = CardIdGenerator()
     nm_h = 40
     width = 150
     height = 200
@@ -18,7 +35,9 @@ class Card(pygame.sprite.Sprite):
         self.interface = interface
         interface.cards += 1
         if card_id is None:
-            card_id = random.choice(cartopedia.resources)
+            card_id = self.card_gen.gen_card()
+        if card_id == 5 or card_id == 15:
+            interface.people += 1
         self.properties = cartopedia.cards[card_id]
         self.image = pygame.image.load(self.properties['path']).convert()
         self.id = card_id
@@ -261,6 +280,7 @@ class Stack(Group):
             for card in self:
                 if card.properties.get('food_needed'):
                     self.interface.food_needed -= card.properties['food_needed']
+                    self.interface.people -= 1
                 self.interface.cards -= 1
             self.empty()
             for card_id in self.craft['result']:

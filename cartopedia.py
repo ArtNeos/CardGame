@@ -80,7 +80,20 @@ cards = {
         'price': 3,
         'sellable': True,
         'card_cap': 6,
-    }
+    },
+    14: {
+        'name': 'house',
+        'path': 'card_images/house.png',
+        'price': 3,
+        'sellable': True,
+    },
+    15: {
+        'name': 'baby',
+        'path': 'card_images/baby.png',
+        'price': 0,
+        'sellable': False,
+        'food_needed': 1,
+    },
 }
 
 resources = [1, 2, 3, 7, 9, 10]
